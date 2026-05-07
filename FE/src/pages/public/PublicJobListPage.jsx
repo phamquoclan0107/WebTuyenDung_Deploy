@@ -1,0 +1,531 @@
+// import { useState } from 'react'
+// import { useNavigate, useSearchParams } from 'react-router-dom'
+// import { useJobs } from '../../hooks/useJobs'
+// import { useCategories } from '../../hooks/useCategories'
+// import { useSavedJobs } from '../../hooks/useSavedJobs'
+// import { formatDate, getJobTypeLabel } from '../../utils/formatters'
+
+// export default function PublicJobListPage() {
+//   const navigate = useNavigate()
+//   const [searchParams] = useSearchParams()
+//   const initKeyword = searchParams.get('keyword') || ''
+
+//   const { data, loading, error, params, updateParams, setPage } = useJobs({
+//     keyword: initKeyword,
+//     status:  'ACTIVE',
+//     size:    9,
+//   })
+//   const { categories } = useCategories('JOB')
+//   const { toggle, isSaved } = useSavedJobs()
+
+//   const [keywordInput, setKeywordInput]   = useState(initKeyword)
+//   const [locationInput, setLocationInput] = useState('')
+
+//   const handleSearch = () => {
+//     updateParams({ keyword: keywordInput, location: locationInput })
+//   }
+
+//   const handleReset = () => {
+//     setKeywordInput('')
+//     setLocationInput('')
+//     updateParams({ keyword: '', location: '', categoryId: '', sort: 'createdAt,desc' })
+//   }
+
+//   const jobs       = data?.content || []
+//   const total      = data?.totalElements || 0
+//   const totalPages = data?.totalPages || 0
+//   const curPage    = data?.number || 0
+
+//   return (
+//     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 24px' }}>
+//       <h1 style={{ fontSize: 28, fontWeight: 700, color: '#1a2340', marginBottom: 8 }}>Tin tuyển dụng</h1>
+//       <p style={{ color: '#6b7280', marginBottom: 32, fontSize: 14 }}>{total} vị trí đang tuyển dụng</p>
+
+//       <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+//         {/* Sidebar Filters */}
+//         <aside style={{ width: 240, flexShrink: 0, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20 }}>
+//           <h3 style={{ fontWeight: 700, fontSize: 15, color: '#1a2340', marginBottom: 16 }}>Bộ lọc</h3>
+//           <FilterGroup label="Danh mục">
+//             <select
+//               value={params.categoryId || ''}
+//               onChange={(e) => updateParams({ categoryId: e.target.value || '' })}
+//               style={inputStyle}
+//             >
+//               <option value="">Tất cả</option>
+//               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+//             </select>
+//           </FilterGroup>
+//           <FilterGroup label="Từ khóa">
+//             <input
+//               value={keywordInput}
+//               onChange={(e) => setKeywordInput(e.target.value)}
+//               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+//               placeholder="Vị trí, kỹ năng..."
+//               style={inputStyle}
+//             />
+//           </FilterGroup>
+
+//           <FilterGroup label="Địa điểm">
+//             <input
+//               value={locationInput}
+//               onChange={(e) => setLocationInput(e.target.value)}
+//               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+//               placeholder="TP.HCM, Hà Nội..."
+//               style={inputStyle}
+//             />
+//           </FilterGroup>
+
+          
+
+//           <FilterGroup label="Sắp xếp">
+//             <select value={params.sort} onChange={(e) => updateParams({ sort: e.target.value })} style={inputStyle}>
+//               <option value="createdAt,desc">Mới nhất</option>
+//               <option value="createdAt,asc">Cũ nhất</option>
+//               <option value="expiresAt,asc">Sắp hết hạn</option>
+//             </select>
+//           </FilterGroup>
+
+//           <button onClick={handleSearch} style={btnPrimary}>Tìm kiếm</button>
+//           <button onClick={handleReset} style={btnGhost}>Đặt lại</button>
+//         </aside>
+
+//         {/* Results */}
+//         <div style={{ flex: 1, minWidth: 0 }}>
+//           {loading ? (
+//             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
+//               {[1,2,3,4,5,6].map((i) => (
+//                 <div key={i} style={{ background: '#fff', borderRadius: 12, height: 200, border: '1px solid #e5e7eb', opacity: 0.5 }} />
+//               ))}
+//             </div>
+//           ) : error ? (
+//             <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, padding: 24, color: '#dc2626', textAlign: 'center' }}>{error}</div>
+//           ) : jobs.length === 0 ? (
+//             <div style={{ background: '#fff', borderRadius: 12, padding: 60, textAlign: 'center', border: '1px solid #e5e7eb' }}>
+//               <div style={{ fontSize: 40, marginBottom: 12 }}>🔍</div>
+//               <p style={{ color: '#6b7280', fontSize: 14 }}>Không tìm thấy tin tuyển dụng phù hợp</p>
+//             </div>
+//           ) : (
+//             <>
+//               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))', gap: 16 }}>
+//                 {jobs.map((job) => (
+//                   <JobCard
+//                     key={job.id}
+//                     job={job}
+//                     saved={isSaved(job.id)}
+//                     onSave={(e) => { e.stopPropagation(); toggle(job.id) }}
+//                     onClick={() => navigate(`/jobs/${job.id}`)}
+//                   />
+//                 ))}
+//               </div>
+
+//               {totalPages > 1 && (
+//                 <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 32 }}>
+//                   <button disabled={curPage === 0} onClick={() => setPage(curPage - 1)} style={pageBtnStyle(false)}>‹</button>
+//                   {Array.from({ length: totalPages }, (_, i) => (
+//                     <button key={i} onClick={() => setPage(i)} style={pageBtnStyle(i === curPage)}>{i + 1}</button>
+//                   ))}
+//                   <button disabled={curPage === totalPages - 1} onClick={() => setPage(curPage + 1)} style={pageBtnStyle(false)}>›</button>
+//                 </div>
+//               )}
+//             </>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+// function JobCard({ job, saved, onSave, onClick }) {
+//   return (
+//     <div
+//       onClick={onClick}
+//       style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden', cursor: 'pointer', position: 'relative', transition: 'box-shadow 0.2s, transform 0.2s' }}
+//       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+//       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)' }}
+//     >
+//       <div style={{ padding: 16 }}>
+//         <button onClick={onSave} style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,0.9)', border: 'none', cursor: 'pointer', padding: 6, borderRadius: 6 }}>
+//           <BookmarkIcon filled={saved} />
+//         </button>
+
+//         <div style={{ fontWeight: 700, fontSize: 14, color: '#1a2340', marginBottom: 6, paddingRight: 28, lineHeight: 1.4 }}>{job.title}</div>
+//         {job.companyName && (
+//           <div style={{ fontSize: 12, color: '#374151', fontWeight: 500, marginBottom: 4 }}>{job.companyName}</div>
+//         )}
+//         <div style={{ fontSize: 12, color: '#1a7a4a', fontWeight: 500, marginBottom: 10 }}>{job.categoryName}</div>
+
+//         {job.location && (
+//           <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#6b7280', fontSize: 12, marginBottom: 6 }}>
+//             📍 {job.location}
+//           </div>
+//         )}
+
+//         {job.experienceLevel && (
+//           <div style={{ fontSize: 11, color: '#7e22ce', background: '#faf5ff', padding: '2px 8px', borderRadius: 10, display: 'inline-block', marginBottom: 6 }}>
+//             🎓 {job.experienceLevel}
+//           </div>
+//         )}
+
+//         {job.expiresAt && (
+//           <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 6 }}>Hết hạn: {formatDate(job.expiresAt)}</div>
+//         )}
+
+//         {job.jobType && (
+//           <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid #f3f4f6' }}>
+//             <span style={{ background: '#eff6ff', color: '#1d4ed8', fontSize: 11, fontWeight: 500, padding: '2px 8px', borderRadius: 10 }}>
+//               {getJobTypeLabel(job.jobType)}
+//             </span>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   )
+// }
+
+// function FilterGroup({ label, children }) {
+//   return (
+//     <div style={{ marginBottom: 16 }}>
+//       <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6 }}>{label}</label>
+//       {children}
+//     </div>
+//   )
+// }
+
+// function BookmarkIcon({ filled }) {
+//   return (
+//     <svg width="18" height="18" viewBox="0 0 24 24" fill={filled ? '#1a7a4a' : 'none'} stroke={filled ? '#1a7a4a' : '#9ca3af'} strokeWidth="2">
+//       <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+//     </svg>
+//   )
+// }
+
+// const inputStyle = {
+//   width: '100%', padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 8,
+//   fontSize: 13, outline: 'none', boxSizing: 'border-box', color: '#1a2340', background: '#f9fafb'
+// }
+// const btnPrimary = {
+//   width: '100%', padding: '10px', background: '#1a7a4a', color: '#fff', border: 'none',
+//   borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', marginBottom: 8
+// }
+// const btnGhost = {
+//   width: '100%', padding: '10px', background: 'none', color: '#6b7280', border: '1px solid #e5e7eb',
+//   borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer'
+// }
+// const pageBtnStyle = (active) => ({
+//   width: 36, height: 36, border: `1px solid ${active ? '#1a7a4a' : '#e5e7eb'}`,
+//   borderRadius: 8, background: active ? '#1a7a4a' : '#fff', color: active ? '#fff' : '#4b5563',
+//   cursor: 'pointer', fontSize: 13, fontWeight: active ? 700 : 400,
+// })
+import { useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useJobs } from '../../hooks/useJobs'
+import { useCategories } from '../../hooks/useCategories'
+import { useSavedJobs } from '../../hooks/useSavedJobs'
+import { formatDate, getJobTypeLabel } from '../../utils/formatters'
+
+export default function PublicJobListPage() {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const initKeyword = searchParams.get('keyword') || ''
+
+  const { data, loading, error, params, updateParams, setPage } = useJobs({
+    keyword: initKeyword,
+    status:  'ACTIVE',
+    size:    9,
+  })
+  const { categories } = useCategories('JOB')
+  const { toggle, isSaved } = useSavedJobs()
+
+  const [keywordInput, setKeywordInput]   = useState(initKeyword)
+  const [locationInput, setLocationInput] = useState('')
+  const [filterOpen, setFilterOpen]       = useState(false)
+
+  const handleSearch = () => {
+    updateParams({ keyword: keywordInput, location: locationInput })
+    setFilterOpen(false)
+  }
+
+  const handleReset = () => {
+    setKeywordInput('')
+    setLocationInput('')
+    updateParams({ keyword: '', location: '', categoryId: '', sort: 'createdAt,desc' })
+  }
+
+  const jobs       = data?.content || []
+  const total      = data?.totalElements || 0
+  const totalPages = data?.totalPages || 0
+  const curPage    = data?.number || 0
+
+  return (
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 24px' }}>
+      <style>{`
+        .job-layout {
+          display: flex;
+          gap: 24px;
+          align-items: flex-start;
+        }
+        .job-sidebar {
+          width: 240px;
+          flex-shrink: 0;
+        }
+        .job-filter-toggle {
+          display: none;
+        }
+        .job-sidebar-inner {
+          display: block;
+          background: #fff;
+          border: 1px solid #e5e7eb;
+          border-radius: 12px;
+          padding: 20px;
+        }
+        .job-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+          gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+          .job-layout {
+            flex-direction: column;
+          }
+          .job-sidebar {
+            width: 100%;
+          }
+          .job-filter-toggle {
+            display: flex;
+            width: 100%;
+            padding: 10px 16px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+          }
+          .job-sidebar-inner {
+            display: none;
+          }
+          .job-sidebar-inner.open {
+            display: block;
+          }
+          .job-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+        }
+      `}</style>
+
+      <h1 style={{ fontSize: 28, fontWeight: 700, color: '#1a2340', marginBottom: 8 }}>Tin tuyển dụng</h1>
+      <p style={{ color: '#6b7280', marginBottom: 32, fontSize: 14 }}>{total} vị trí đang tuyển dụng</p>
+
+      <div className="job-layout">
+        {/* Sidebar Filters */}
+        <aside className="job-sidebar">
+          <button
+            className="job-filter-toggle"
+            onClick={() => setFilterOpen(!filterOpen)}
+          >
+            <span>Tìm kiếm tin tuyển dụng</span>
+            <span>{filterOpen ? '▲' : '▼'}</span>
+          </button>
+
+          <div className={`job-sidebar-inner${filterOpen ? ' open' : ''}`}>
+            {/* <h3 style={{ fontWeight: 700, fontSize: 15, color: '#1a2340', marginBottom: 16 }}>Bộ lọc</h3> */}
+
+            <FilterGroup label="Danh mục">
+              <select
+                value={params.categoryId || ''}
+                onChange={(e) => updateParams({ categoryId: e.target.value || '' })}
+                style={inputStyle}
+              >
+                <option value="">Tất cả</option>
+                {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            </FilterGroup>
+
+            <FilterGroup label="Từ khóa">
+              <input
+                value={keywordInput}
+                onChange={(e) => setKeywordInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                placeholder="Vị trí tuyển dụng..."
+                style={inputStyle}
+              />
+            </FilterGroup>
+
+            {/* <FilterGroup label="Địa điểm">
+              <input
+                value={locationInput}
+                onChange={(e) => setLocationInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                placeholder="TP.HCM, Hà Nội..."
+                style={inputStyle}
+              />
+            </FilterGroup>
+
+            <FilterGroup label="Sắp xếp">
+              <select
+                value={params.sort}
+                onChange={(e) => updateParams({ sort: e.target.value })}
+                style={inputStyle}
+              >
+                <option value="createdAt,desc">Mới nhất</option>
+                <option value="createdAt,asc">Cũ nhất</option>
+                <option value="expiresAt,asc">Sắp hết hạn</option>
+              </select>
+            </FilterGroup> */}
+
+            <button onClick={handleSearch} style={btnPrimary}>Tìm kiếm</button>
+            <button onClick={handleReset} style={btnGhost}>Đặt lại</button>
+          </div>
+        </aside>
+
+        {/* Results */}
+       <div style={{ flex: 1, minWidth: 0, width: '100%' }}>
+          {loading ? (
+            <div className="job-grid">
+              {[1,2,3,4,5,6].map((i) => (
+                <div key={i} style={{ background: '#fff', borderRadius: 12, height: 200, border: '1px solid #e5e7eb', opacity: 0.5 }} />
+              ))}
+            </div>
+          ) : error ? (
+            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, padding: 24, color: '#dc2626', textAlign: 'center' }}>{error}</div>
+          ) : jobs.length === 0 ? (
+            <div style={{ background: '#fff', borderRadius: 12, padding: 60, textAlign: 'center', border: '1px solid #e5e7eb' }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>🔍</div>
+              <p style={{ color: '#6b7280', fontSize: 14 }}>Không tìm thấy tin tuyển dụng phù hợp</p>
+            </div>
+          ) : (
+            <>
+              <div className="job-grid">
+                {jobs.map((job) => (
+                  <JobCard
+                    key={job.id}
+                    job={job}
+                    saved={isSaved(job.id)}
+                    onSave={(e) => { e.stopPropagation(); toggle(job.id) }}
+                    onClick={() => navigate(`/jobs/${job.id}`)}
+                  />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 32, flexWrap: 'wrap' }}>
+                  <button disabled={curPage === 0} onClick={() => setPage(curPage - 1)} style={pageBtnStyle(false)}>‹</button>
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button key={i} onClick={() => setPage(i)} style={pageBtnStyle(i === curPage)}>{i + 1}</button>
+                  ))}
+                  <button disabled={curPage === totalPages - 1} onClick={() => setPage(curPage + 1)} style={pageBtnStyle(false)}>›</button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function JobCard({ job, saved, onSave, onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden', cursor: 'pointer', position: 'relative', transition: 'box-shadow 0.2s, transform 0.2s' }}
+      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)' }}
+    >
+      <div style={{ padding: 16 }}>
+        <button onClick={onSave} style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,0.9)', border: 'none', cursor: 'pointer', padding: 6, borderRadius: 6 }}>
+          <BookmarkIcon filled={saved} />
+        </button>
+
+        <div style={{ fontWeight: 700, fontSize: 14, color: '#1a2340', marginBottom: 6, paddingRight: 28, lineHeight: 1.4 }}>{job.title}</div>
+        {job.companyName && (
+          <div style={{ fontSize: 12, color: '#374151', fontWeight: 500, marginBottom: 4 }}>{job.companyName}</div>
+        )}
+        <div style={{ fontSize: 12, color: '#1a7a4a', fontWeight: 500, marginBottom: 10 }}>{job.categoryName}</div>
+
+        {job.location && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#6b7280', fontSize: 12, marginBottom: 6 }}>
+  <LocationIcon /> {job.location}
+</div>
+        )}
+
+        {job.experienceLevel && (
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#7e22ce', background: '#faf5ff', padding: '2px 8px', borderRadius: 10, marginBottom: 6 }}>
+  <GraduationIcon /> {job.experienceLevel}
+</div>
+        )}
+
+        {job.expiresAt && (
+          <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 6 }}>Hết hạn: {formatDate(job.expiresAt)}</div>
+        )}
+
+        {job.jobType && (
+          <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid #f3f4f6' }}>
+            <span style={{ background: '#eff6ff', color: '#1d4ed8', fontSize: 11, fontWeight: 500, padding: '2px 8px', borderRadius: 10 }}>
+              {getJobTypeLabel(job.jobType)}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function FilterGroup({ label, children }) {
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6 }}>{label}</label>
+      {children}
+    </div>
+  )
+}
+
+function BookmarkIcon({ filled }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill={filled ? '#1a7a4a' : 'none'} stroke={filled ? '#1a7a4a' : '#9ca3af'} strokeWidth="2">
+      <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+    </svg>
+  )
+}
+function LocationIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+      <circle cx="12" cy="10" r="3"/>
+    </svg>
+  )
+}
+
+function GraduationIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+      <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+    </svg>
+  )
+}
+const inputStyle = {
+  width: '100%', padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 8,
+  fontSize: 13, outline: 'none', boxSizing: 'border-box', color: '#1a2340', background: '#f9fafb'
+}
+const btnPrimary = {
+  width: '100%', padding: '10px', background: '#1a7a4a', color: '#fff', border: 'none',
+  borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', marginBottom: 8
+}
+const btnGhost = {
+  width: '100%', padding: '10px', background: 'none', color: '#6b7280', border: '1px solid #e5e7eb',
+  borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer'
+}
+const pageBtnStyle = (active) => ({
+  width: 36, height: 36, border: `1px solid ${active ? '#1a7a4a' : '#e5e7eb'}`,
+  borderRadius: 8, background: active ? '#1a7a4a' : '#fff', color: active ? '#fff' : '#4b5563',
+  cursor: 'pointer', fontSize: 13, fontWeight: active ? 700 : 400,
+})

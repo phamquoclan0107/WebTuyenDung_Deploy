@@ -1,0 +1,13 @@
+# ============================================================
+#  .gitignore — thêm vào .gitignore hiện có của project
+# ============================================================
+
+# Docker env — KHÔNG commit file chứa secrets
+.env
+
+# Maven
+target/
+
+# IDE
+.idea/
+*.iml
