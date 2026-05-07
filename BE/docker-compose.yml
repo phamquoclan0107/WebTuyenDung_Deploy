@@ -115,8 +115,8 @@ services:
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
 
-      # ── Upload (nếu vẫn dùng local storage song song) ────
-      UPLOAD_BASE_URL: ${UPLOAD_BASE_URL:-http://localhost:8080/uploads}
+           # ── Upload (nếu vẫn dùng local storage song song) ────
+      #UPLOAD_BASE_URL: ${UPLOAD_BASE_URL:-http://localhost:8080/uploads}
 
     networks:
       - jobapp_net
