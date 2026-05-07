@@ -5,11 +5,11 @@ FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
-# Copy pom.xml trước để cache layer dependency
+# Cache layer dependency trước
 COPY pom.xml .
 RUN mvn dependency:go-offline -q
 
-# Copy toàn bộ source rồi build
+# Copy source rồi build
 COPY src ./src
 RUN mvn clean package -DskipTests -q
 
@@ -20,20 +20,17 @@ FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-# Tạo user không phải root để chạy app
+# Non-root user
 RUN addgroup -S spring && adduser -S spring -G spring
 
-# Copy jar từ stage build
 COPY --from=builder /app/target/*.jar app.jar
 
-# Đổi owner
 RUN chown spring:spring app.jar
 
 USER spring
 
 EXPOSE 8080
 
-# Tối ưu JVM cho container
 ENTRYPOINT ["java", \
   "-XX:+UseContainerSupport", \
   "-XX:MaxRAMPercentage=75.0", \
