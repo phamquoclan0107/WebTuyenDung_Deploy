@@ -1,0 +1,23 @@
+Vậy command export của bạn sẽ là:
+docker ps
+Lấy tên container MySQL trước, ví dụ container là mysql-job.
+Sau đó chạy:
+docker exec mysql-job mysqldump -u root -p123456 job_db > job_db.sql
+Hoặc dùng user thường:
+docker exec mysql-job mysqldump -u job_user -p123456 job_db > job_db.sql
+Sau khi chạy xong sẽ có file:
+job_db.sql
+nằm ở folder hiện tại trên Windows.
+
+Ví dụ đầy đủ:
+docker ps
+ra:
+NAMESjob-mysql
+thì export:
+docker exec job-mysql mysqldump -u root -p123456 job_db > job_db.sql
+
+Nếu PowerShell bị lỗi redirect > thì dùng:
+docker exec job-mysql mysqldump -u root -p123456 job_db | Out-File -Encoding utf8 job_db.sql
+
+Muốn import lại sau này thì:
+docker exec -i job-mysql mysql -u root -p123456 job_db < job_db.sql
