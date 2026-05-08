@@ -19,7 +19,7 @@ export default function PublicLayout() {
 
       {/* HEADER (UI from FormHeader) */}
       <header className="fixed top-0 left-0 w-full z-[50] bg-white shadow-md border-b border-gray-100">
-        <nav className="flex items-center justify-between pl-20 pr-20 py-4 mx-auto max-w-site">
+        <nav className="flex items-center justify-between px-4 md:px-20 py-4 mx-auto max-w-site">
 
           {/* Logo */}
           <Link to="/" onClick={close} className="flex items-center gap-2">
