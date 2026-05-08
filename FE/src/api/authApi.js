@@ -1,7 +1,7 @@
 // src/api/authApi.js
 import axiosInstance from './axiosInstance'
 
-/** POST /api/auth/register — đăng ký*/
+/** POST /api/auth/register — đăng ký ad*/
 export const register = (payload) =>
   axiosInstance.post('/api/auth/register', payload).then((r) => r.data)
 
