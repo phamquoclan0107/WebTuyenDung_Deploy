@@ -54,6 +54,6 @@ public class ApiResponse<T> {
 
     public static ApiResponse<Void> validationError(String message, Map<String, String> errors) {
         return new ApiResponse<>(false, message, errors);
-        /// /
+
     }
 }
