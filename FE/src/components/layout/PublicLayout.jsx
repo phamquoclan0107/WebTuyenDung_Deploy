@@ -24,7 +24,7 @@ export default function PublicLayout() {
           {/* Logo */}
           <Link to="/" onClick={close} className="flex items-center gap-2">
             <img
-              src="../../../dist/assets/logo.jpg"
+              src="/logo.jpg"
               alt="Logo"
               className="h-14 w-14 rounded-full object-cover border border-gray-200"
             />
@@ -97,7 +97,7 @@ export default function PublicLayout() {
       <main className="pt-[84px]">
         {pathname === "/" && (
           <img
-            src="../../../dist/assets/view8.png"
+            src="/view8.png"
             alt="Giới thiệu công ty"
             className="w-full h-auto object-contain"
           />

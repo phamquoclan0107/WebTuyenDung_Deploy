@@ -114,7 +114,7 @@ export default function LoginPage() {
       <div style={S.card}>
         {/* FIX: dùng /favicon.svg thay vì path tương đối sai */}
         <img
-          src="/favicon.svg"
+          src="/logo.jpg"
           alt="Logo"
           style={S.logoImg}
           onError={(e) => { e.target.style.display = 'none' }}

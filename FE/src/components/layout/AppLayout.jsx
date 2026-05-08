@@ -67,7 +67,7 @@ export default function AppLayout() {
           }}
         >
           <img
-            src="../../../dist/assets/logo.jpg" // hoặc link ảnh của bạn
+            src="/logo.jpg" // hoặc link ảnh của bạn
             alt="Eye Admin"
             style={{
               width: 32,

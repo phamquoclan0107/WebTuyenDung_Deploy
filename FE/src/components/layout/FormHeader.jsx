@@ -23,7 +23,7 @@ export default function FormHeader() {
           {/* Logo */}
           <Link to="/" className="no-underline" onClick={close}>
             <img
-              src="../../../dist/Logo.jpg"
+              src="/logo.jpg"
               alt="EYE STAR"
               className="h-14 w-14 rounded-full object-cover border border-gray-200"
             />
