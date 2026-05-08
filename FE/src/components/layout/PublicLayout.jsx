@@ -28,7 +28,7 @@ export default function PublicLayout() {
               alt="Logo"
               className="h-14 w-14 rounded-full object-cover border border-gray-200"
             />
-            <span className="text-gray-900 text-xl font-semibold tracking-wide">
+            <span className="text-gray-900 text-3xl font-semibold tracking-wide">
               CKM
             </span>
           </Link>
