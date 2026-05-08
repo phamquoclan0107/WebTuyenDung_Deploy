@@ -42,7 +42,7 @@ jobs:
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
           build-args: |
-            VITE_API_BASE_URL=https://shopquanao.work
+            VITE_API_BASE_URL=https://chuyenkhoamat.com.vn
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
