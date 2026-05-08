@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
 
 const S = {
   page: {
@@ -22,12 +21,14 @@ const S = {
     padding: "40px 36px",
     boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
   },
-  logo: {
-    fontWeight: 800,
-    fontSize: 20,
-    color: "#111827",
-    marginBottom: 28,
+  logoImg: {
+    width: 70,
+    height: 70,
+    borderRadius: "50%",
+    objectFit: "cover",
     display: "block",
+    margin: "0 auto 28px",
+    border: "2px solid #e5e7eb",
   },
   h1: { fontSize: 26, fontWeight: 800, color: "#111827", margin: "0 0 6px" },
   sub: { fontSize: 13, color: "#6b7280", marginBottom: 28 },
@@ -38,15 +39,6 @@ const S = {
     color: "#374151",
     marginBottom: 6,
   },
-  logoImg: {
-  width: 70,
-  height: 70,
-  borderRadius: '50%',
-  objectFit: 'cover',
-  display: 'block',
-  margin: '0 auto 28px',
-  border: '2px solid #e5e7eb'
-},
   input: {
     width: "100%",
     padding: "10px 14px",
@@ -89,16 +81,15 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // if (isLoggedIn) { navigate('/admin/jobs', { replace: true }); return null }
-
-  const handleChange = (e) =>
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/admin/jobs", { replace: true });
     }
   }, [isLoggedIn, navigate]);
+
+  const handleChange = (e) =>
+    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -121,13 +112,15 @@ export default function LoginPage() {
   return (
     <div style={S.page}>
       <div style={S.card}>
+        {/* FIX: dùng /favicon.svg thay vì path tương đối sai */}
         <img
-          src="../../dist/assets/logo.jpg" // hoặc link logo của bạn
+          src="/favicon.svg"
           alt="Logo"
           style={S.logoImg}
+          onError={(e) => { e.target.style.display = 'none' }}
         />
         <h1 style={S.h1}>Đăng nhập</h1>
-        <p style={S.sub}>Quản lý tin tuyển dụng & sản phẩm</p>
+        <p style={S.sub}>Quản lý tin tuyển dụng &amp; sản phẩm</p>
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 16 }}>
