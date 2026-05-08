@@ -9,8 +9,8 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci --frozen-lockfile
 
-# Build arg cho production API URL
-ARG VITE_API_BASE_URL=https://chuyenkhoamat.com.vn
+# FIX: domain khớp với nginx config trên VPS (shopquanao.work)
+ARG VITE_API_BASE_URL=https://shopquanao.work
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 COPY . .
