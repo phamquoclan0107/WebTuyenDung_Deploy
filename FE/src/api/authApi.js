@@ -1,4 +1,4 @@
-// src/api/authApi.js
+
 import axiosInstance from './axiosInstance'
 
 /** POST /api/auth/register — đăng ký*/
