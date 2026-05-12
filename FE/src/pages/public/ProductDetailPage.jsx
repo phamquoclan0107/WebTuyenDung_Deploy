@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { productService } from '../../services/productService'
+import SEO from '../../components/seo/SEO'
 
 export default function ProductDetailPage() {
   const { id }   = useParams()
@@ -41,6 +42,19 @@ export default function ProductDetailPage() {
 
   return (
     <div style={{ background: '#fff', minHeight: '100vh' }}>
+
+      <SEO
+        title={product.name}
+        description={
+          product.description
+            ? product.description.replace(/<[^>]+>/g, '').slice(0, 155) + '...'
+            : `${product.name} - Sản phẩm chăm sóc mắt chất lượng cao tại Chuyên Khoa Mắt CKM.`
+        }
+        url={`/products/${id}`}
+        image={product.images?.[0]?.url}
+        type="product"
+      />
+
       <style>{`
         .pd-layout {
           display: flex;

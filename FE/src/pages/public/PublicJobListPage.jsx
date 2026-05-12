@@ -222,6 +222,7 @@ import { useJobs } from '../../hooks/useJobs'
 import { useCategories } from '../../hooks/useCategories'
 import { useSavedJobs } from '../../hooks/useSavedJobs'
 import { formatDate, getJobTypeLabel } from '../../utils/formatters'
+import SEO from '../../components/seo/SEO'
 
 export default function PublicJobListPage() {
   const navigate = useNavigate()
@@ -258,6 +259,11 @@ export default function PublicJobListPage() {
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 24px' }}>
+      <SEO
+        title="Tuyển dụng tại CKM"
+        description="Cơ hội việc làm tại Công ty Cổ phần Dược phẩm CKM. Môi trường chuyên nghiệp, phúc lợi tốt."
+        url="/jobs"
+      />
       <style>{`
         .job-layout {
           display: flex;
