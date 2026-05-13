@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+//import { useNavigate } from 'react-router-dom'
 import { productService } from '../../services/productService'
 import { useCategories } from '../../hooks/useCategories'
 import { useNavigate, useLocation } from 'react-router-dom'
