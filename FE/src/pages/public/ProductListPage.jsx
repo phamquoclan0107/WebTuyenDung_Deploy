@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { productService } from '../../services/productService'
 import { useCategories } from '../../hooks/useCategories'
-
+import { useNavigate, useLocation } from 'react-router-dom'
+import SEO from '../../components/seo/SEO' 
 export default function ProductListPage() {
   const navigate = useNavigate()
+  const { pathname }   = useLocation()
   const { categories } = useCategories('PRODUCT')
   const [products, setProducts]     = useState([])
   const [loading, setLoading]       = useState(true)
@@ -58,6 +60,15 @@ export default function ProductListPage() {
 
   return (
     <div style={{ background: '#f9fafb', minHeight: '100vh' }}>
+      <SEO
+        title={pathname === '/'
+          ? 'Công ty Cổ phần Dược phẩm CKM'
+          : 'Danh sách sản phẩm chăm sóc mắt.'}
+        description={pathname === '/'
+          ? 'Công ty Cổ phần Dược phẩm CKM'
+          : 'Chuyên cung cấp sản phẩm chăm sóc mắt chuyên khoa, uy tín, chất lượng cao tại Việt Nam.'}
+        url={pathname}
+      />
       <style>{`
   .product-layout {
     display: flex;
