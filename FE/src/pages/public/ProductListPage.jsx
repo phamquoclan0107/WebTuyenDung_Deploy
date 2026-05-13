@@ -22,7 +22,7 @@ export default function ProductListPage() {
     setError(null)
     productService.search({
       isActive: true,
-      size: 12,
+      size: 20,
       sort: 'createdAt,desc',
       ...params,
     })
