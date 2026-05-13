@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { productService } from '../../services/productService'
 import { useCategories } from '../../hooks/useCategories'
-import SEO from '../../components/seo/SEO'
 
 export default function ProductListPage() {
-  const navigate       = useNavigate()
-  const { pathname }   = useLocation()
+  const navigate = useNavigate()
   const { categories } = useCategories('PRODUCT')
   const [products, setProducts]     = useState([])
   const [loading, setLoading]       = useState(true)
@@ -18,7 +16,7 @@ export default function ProductListPage() {
   const [totalPages, setTotalPages] = useState(0)
   const [total, setTotal]           = useState(0)
   const [filterOpen, setFilterOpen] = useState(false)
-
+  const [lightbox, setLightbox] = useState(null)
   const fetchProducts = (params = {}) => {
     setLoading(true)
     setError(null)
@@ -60,15 +58,6 @@ export default function ProductListPage() {
 
   return (
     <div style={{ background: '#f9fafb', minHeight: '100vh' }}>
-      <SEO
-        title={pathname === '/'
-          ? 'Công ty Cổ phần Dược phẩm CKM - Chuyên khoa mắt'
-          : 'Danh sách sản phẩm chăm sóc mắt'}
-        description={pathname === '/'
-          ? 'Công ty Cổ phần Dược phẩm CKM - Chuyên cung cấp sản phẩm chăm sóc mắt chuyên khoa, uy tín, chất lượng cao tại Việt Nam.'
-          : 'Mua sắm các sản phẩm chăm sóc mắt chất lượng cao: thuốc nhỏ mắt, kính áp tròng, vitamin mắt tại Chuyên Khoa Mắt CKM.'}
-        url={pathname}
-      />
       <style>{`
   .product-layout {
     display: flex;
@@ -142,8 +131,43 @@ export default function ProductListPage() {
 `}</style>
 
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 16px', boxSizing: 'border-box' }}>
-        <h1 style={{ fontSize: 26, fontWeight: 700, color: '#111827', marginBottom: 4 }}>Sản phẩm</h1>
-        <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 28 }}>{total} sản phẩm</p>
+        {/* <h1 style={{ fontSize: 26, fontWeight: 700, color: '#111827', marginBottom: 4 }}>Sản phẩm</h1>
+        <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 28 }}>{total} sản phẩm</p> */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+          <div>
+            <h1 style={{ fontSize: 26, fontWeight: 700, color: '#111827', marginBottom: 4 }}>Sản phẩm</h1>
+            <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 0 }}>{total} sản phẩm</p>
+          </div>
+
+          {/* Hình ảnh chứng nhận */}
+          {/* <div className="cert-images" style={{ display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', flexShrink: 0, flexWrap: 'nowrap' }}>
+              {['DKKDD.jpg ', 'GDP.jpg'].map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt={`Chứng nhận Sở Y tế ${i + 1}`}
+                  onClick={() => setLightbox(src)}
+                  style={{ height: 80, width: 'auto', objectFit: 'contain', border: '1px solid #e5e7eb', borderRadius: 8, cursor: 'zoom-in' }}
+                />
+              ))}
+            </div> */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#6b7280', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Sở Y Tế Chứng Nhận
+              </span>
+              <div className="cert-images" style={{ display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', flexShrink: 0, flexWrap: 'nowrap' }}>
+                {['DKKDD.jpg', 'GDP.jpg'].map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt={`Chứng nhận Sở Y tế ${i + 1}`}
+                    onClick={() => setLightbox(src)}
+                    style={{ height: 80, width: 'auto', objectFit: 'contain', border: '1px solid #e5e7eb', borderRadius: 8, cursor: 'zoom-in' }}
+                  />
+                ))}
+            </div>
+</div>
+        </div>
 
         <div className="product-layout">
           {/* Sidebar filter */}
@@ -232,6 +256,39 @@ export default function ProductListPage() {
           </div>
         </div>
       </div>
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          onClick={() => setLightbox(null)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            background: 'rgba(0,0,0,0.85)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 24, cursor: 'zoom-out',
+          }}
+        >
+          <div onClick={(e) => e.stopPropagation()} style={{ position: 'relative', maxWidth: '90vw', maxHeight: '90vh' }}>
+            <img
+              src={lightbox}
+              alt="Chứng nhận"
+              style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain', borderRadius: 8, display: 'block' }}
+            />
+            <button
+              onClick={() => setLightbox(null)}
+              style={{
+                position: 'absolute', top: -16, right: -16,
+                width: 36, height: 36, borderRadius: '50%',
+                background: '#fff', border: 'none', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 18, fontWeight: 700, color: '#111827',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              }}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
