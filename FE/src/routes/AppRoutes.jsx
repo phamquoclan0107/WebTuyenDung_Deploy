@@ -30,6 +30,7 @@ import AdminProductListPage from '../pages/AdminProductListPage'
 import AdminProductDetailPage from '../pages/AdminProductDetailPage'
 import ProductCreatePage from '../pages/ProductCreatePage'
 import ProductEditPage from '../pages/ProductEditPage'
+import AdminProductSortPage from '../pages/AdminProductSortPage'
 
 // Admin — Other
 import CategoryPage from '../pages/CategoryPage'
@@ -78,6 +79,7 @@ export default function AppRoutes() {
         {/* ── Sản phẩm ── */}
         <Route path="products"          element={<AdminProductListPage />} />
         <Route path="products/create"   element={<ProductCreatePage />} />
+        <Route path="products/sort"     element={<AdminProductSortPage />} />
         <Route path="products/:id"      element={<AdminProductDetailPage />} />
         <Route path="products/:id/edit" element={<ProductEditPage />} />
 

@@ -109,6 +109,17 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.noContent("Xóa ảnh thành công"));
     }
 
+    // Thêm vào cuối class, trước dấu }
+    /**
+     * PUT /api/products/reorder
+     * Body: [{ "id": 1, "displayOrder": 0 }, { "id": 2, "displayOrder": 1 }, ...]
+     */
+    @PutMapping("/reorder")
+    public ResponseEntity<ApiResponse<Void>> reorder(
+            @RequestBody List<ProductDTO.ReorderItem> items) {
+        productService.reorder(items);
+        return ResponseEntity.ok(ApiResponse.ok("Cập nhật thứ tự thành công", null));
+    }
     /**
      * Cập nhật sort_order của 1 ảnh.
      * Body: { "sortOrder": 2 }

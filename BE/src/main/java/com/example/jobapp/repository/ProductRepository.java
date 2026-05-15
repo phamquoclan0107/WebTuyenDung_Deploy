@@ -9,10 +9,22 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-
+import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
+    // Thêm method mới:
+    @Query("SELECT p FROM Product p " +
+            "JOIN FETCH p.category c " +
+            "WHERE (:categoryId IS NULL OR c.id = :categoryId) " +
+            "AND (:isActive IS NULL OR p.isActive = :isActive) " +
+            "AND (:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) " +
+            "ORDER BY p.displayOrder ASC, p.createdAt DESC")
+    List<Product> findAllOrdered(
+            @Param("categoryId") Integer categoryId,
+            @Param("isActive")   Boolean isActive,
+            @Param("name")       String name
+    );
     // ✅ Fetch join images + category trong 1 query — chống N+1
     @Query("SELECT DISTINCT p FROM Product p " +
             "JOIN FETCH p.category c " +

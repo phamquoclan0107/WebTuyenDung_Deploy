@@ -9,6 +9,7 @@ const NAV = [
   { to: "/admin/jobs", label: "Tin tuyển dụng", icon: BriefcaseIcon },
   { to: "/admin/categories", label: "Danh mục", icon: TagIcon },
   { to: "/admin/products", label: "Sản phẩm", icon: BoxIcon },
+  { to: "/admin/products/sort", label: "Sắp xếp sản phẩm", icon: SortIcon },
 ];
 
 function getInitials(fullName, username) {
@@ -298,6 +299,25 @@ function LogoutIcon() {
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
       <polyline points="16 17 21 12 16 7" />
       <line x1="21" y1="12" x2="9" y2="12" />
+    </svg>
+  );
+}
+function SortIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="15" y2="12" />
+      <line x1="3" y1="18" x2="9" y2="18" />
+      <polyline points="17 15 21 19 17 23" />
     </svg>
   );
 }

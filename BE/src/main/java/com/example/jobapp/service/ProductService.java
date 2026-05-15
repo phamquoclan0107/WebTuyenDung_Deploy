@@ -177,4 +177,15 @@ public class ProductService {
         if (url == null || url.isBlank()) return "";
         return url.substring(url.lastIndexOf("/") + 1);
     }
+
+    // Thêm vào cuối class, trước dấu }
+    public void reorder(List<ProductDTO.ReorderItem> items) {
+        for (ProductDTO.ReorderItem item : items) {
+            productRepo.findById(item.getId()).ifPresent(p -> {
+                p.setDisplayOrder(item.getDisplayOrder());
+                productRepo.save(p);
+            });
+        }
+        log.info("Reordered {} products", items.size());
+    }
 }

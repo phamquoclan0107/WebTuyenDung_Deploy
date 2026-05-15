@@ -53,8 +53,18 @@ public class ProductDTO {
         private String name;
         private String description;
         private Boolean isActive;
+        private Integer displayOrder; //them sort
         private List<ProductImageDTO.Response> images;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+    }
+
+    // Thêm vào class ProductDTO:
+
+    @Getter @Setter
+    @NoArgsConstructor @AllArgsConstructor
+    public static class ReorderItem {
+        private Integer id;
+        private Integer displayOrder;
     }
 }

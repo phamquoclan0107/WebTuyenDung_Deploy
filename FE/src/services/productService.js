@@ -39,4 +39,11 @@ export const productService = {
   async deleteImage(productId, imageId) {
     return productApi.deleteProductImage(productId, imageId)
   },
+
+  // Thêm vào object productService:
+  async reorder(items) {
+    const res = await productApi.reorderProducts(items)
+    if (!res.success) throw new Error(res.message)
+    return res.data
+  },
 }

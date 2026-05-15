@@ -45,6 +45,11 @@ public class Product {
     @Builder.Default
     private Boolean isActive = true;
 
+    // Thêm sau field isActive:
+    @Column(name = "display_order", nullable = false)
+    @Builder.Default
+    private Integer displayOrder = 0;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

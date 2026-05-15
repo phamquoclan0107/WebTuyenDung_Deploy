@@ -25,6 +25,7 @@ public class ProductMapper {
                 .name(p.getName())
                 .description(p.getDescription())
                 .isActive(p.getIsActive())
+                .displayOrder(p.getDisplayOrder())
                 .images(images)
                 .createdAt(p.getCreatedAt())
                 .updatedAt(p.getUpdatedAt())

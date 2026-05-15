@@ -50,3 +50,10 @@ export const addProductImages = (id, files) => {
  */
 export const deleteProductImage = (productId, imageId) =>
   axiosInstance.delete(`/api/products/${productId}/images/${imageId}`).then((r) => r.data)
+
+// Thêm vào cuối file:
+export const reorderProducts = (items) =>
+  axiosInstance.put('/api/products/reorder', items).then((r) => r.data)
+
+export const getAllProductsOrdered = (params = {}) =>
+  axiosInstance.get('/api/products', { params: { ...params, sort: 'displayOrder,asc' } }).then((r) => r.data)

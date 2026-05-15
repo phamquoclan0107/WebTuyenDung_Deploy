@@ -25,7 +25,8 @@ export default function ProductListPage() {
     productService.search({
       isActive: true,
       size: 20,
-      sort: 'createdAt,desc',
+      // sort: 'createdAt,desc',
+      sort: 'displayOrder,asc',
       ...params,
     })
       .then((data) => {
