@@ -713,7 +713,7 @@ export default function ProductListPage() {
             z-index: unset !important;
           }
           .product-layout { flex-direction: column; }
-          .product-sidebar { width: 100%; top: 85px; z-index: 20; }
+          .product-sidebar { width: 100%; top: 70px; z-index: 20; }
           .filter-toggle-btn {
             display: flex;
             width: 100%;
