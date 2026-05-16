@@ -32,7 +32,11 @@ export default function PublicLayout() {
               CKM
             </span>
           </Link>
-          
+          {/* Portal slot — search bar sẽ nhảy vào đây */}
+          <div
+            id="header-search-portal"
+            className="hidden md:flex flex-1 justify-center px-8"
+          />
           {/* Desktop nav */}
           <ul className="hidden md:flex gap-2.5 list-none m-0 p-0">
             {NAV_LINKS.map(({ label, to }) => (
