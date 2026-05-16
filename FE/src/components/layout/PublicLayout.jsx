@@ -73,7 +73,7 @@ export default function PublicLayout() {
 
       {/* Mobile menu */}
       <div
-        className={`fixed top-0 left-0 h-full w-[280px] bg-white z-[70] flex flex-col pt-20 gap-3 transition-transform duration-200 md:hidden
+        className={`fixed top-0 left-0 h-full w-[280px] bg-white z-[700] flex flex-col pt-20 gap-3 transition-transform duration-200 md:hidden
         ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <button
