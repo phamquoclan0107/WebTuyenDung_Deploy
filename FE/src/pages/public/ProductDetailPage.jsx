@@ -20,7 +20,7 @@ export default function ProductDetailPage() {
         setActiveImg(0)
         return productService.search({
           isActive: true,
-          size: 12,
+          size: 50,
           sort: 'createdAt,desc',
           categoryId: data.categoryId || undefined,
         })
