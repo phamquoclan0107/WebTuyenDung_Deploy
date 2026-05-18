@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 const NAV_LINKS = [
-  { label: "Trang chủ", to: "/" },
+  { label: "Trang chủ", to: "" },
   // { label: "Sản phẩm", to: "/products" },
   { label: "Tuyển dụng", to: "/jobs" },
   { label: "Đăng nhập", to: "/login" },
