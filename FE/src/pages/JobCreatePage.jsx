@@ -4,6 +4,7 @@ import { jobService } from "../services/jobService";
 import JobForm from "../components/job/JobForm";
 import { PageTitle, Card, Button } from "../components/ui";
 import toast from "react-hot-toast";
+import { parseApiError } from "../utils/formatters";
 
 export default function JobCreatePage() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function JobCreatePage() {
       toast.success("Tạo tin tuyển dụng thành công!");
       navigate(`/admin/jobs/${created.id}`);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Tạo tin thất bại");
+      toast.error(parseApiError(err, "Tạo tin thất bại"), { style: { whiteSpace: "pre-line" } });
     } finally {
       setLoading(false);
     }

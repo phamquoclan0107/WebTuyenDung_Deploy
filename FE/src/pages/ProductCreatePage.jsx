@@ -4,6 +4,7 @@ import { productService } from '../services/productService'
 import ProductForm from '../components/product/ProductForm'
 import { PageTitle, Card, Button } from '../components/ui'
 import toast from 'react-hot-toast'
+import { parseApiError } from '../utils/formatters'
 
 export default function ProductCreatePage() {
   const navigate = useNavigate()
@@ -19,13 +20,11 @@ export default function ProductCreatePage() {
     try {
       const created = await productService.create(data)
 
-      // Upload ảnh đã chọn trước (nếu có)
       const files = pendingFilesRef.current
       if (files && files.length > 0) {
         try {
           await productService.addImages(created.id, files)
         } catch (imgErr) {
-          // Sản phẩm đã tạo thành công, chỉ cảnh báo về ảnh
           toast.error('Sản phẩm đã tạo nhưng upload ảnh thất bại. Vui lòng thêm ảnh trong trang chỉnh sửa.')
         }
       }
@@ -33,7 +32,7 @@ export default function ProductCreatePage() {
       toast.success('Tạo sản phẩm thành công!')
       navigate(`/admin/products/${created.id}`)
     } catch (err) {
-      toast.error(err?.response?.data?.message || err?.message || 'Tạo sản phẩm thất bại')
+      toast.error(parseApiError(err, 'Tạo sản phẩm thất bại'), { style: { whiteSpace: 'pre-line' } })
     } finally {
       setLoading(false)
     }

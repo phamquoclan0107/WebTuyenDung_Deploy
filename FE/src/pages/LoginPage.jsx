@@ -167,7 +167,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* <p
+        <p
           style={{
             textAlign: "center",
             marginTop: 20,
@@ -179,7 +179,7 @@ export default function LoginPage() {
           <Link to="/register" style={S.link}>
             Đăng ký ngay
           </Link>
-        </p> */}
+        </p>
       </div>
     </div>
   );

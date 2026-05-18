@@ -1,6 +1,24 @@
 import { format, parseISO } from 'date-fns'
 import { vi } from 'date-fns/locale'
 
+/**
+ * Chuyển lỗi từ API thành chuỗi hiển thị cho toast.
+ * - Nếu BE trả về errors (validation): liệt kê từng field
+ * - Nếu chỉ có message: dùng message
+ * - Fallback: dùng fallback
+ */
+export const parseApiError = (err, fallback = 'Đã có lỗi xảy ra') => {
+  const data = err?.response?.data
+  if (!data) return err?.message || fallback
+
+  if (data.errors && typeof data.errors === 'object') {
+    const lines = Object.entries(data.errors).map(([field, msg]) => `• ${field}: ${msg}`)
+    return [data.message, ...lines].join('\n')
+  }
+
+  return data.message || err?.message || fallback
+}
+
 export const formatDate = (dateStr) => {
   if (!dateStr) return '—'
   try {

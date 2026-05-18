@@ -4,6 +4,7 @@ import { jobService } from '../services/jobService'
 import JobForm from '../components/job/JobForm'
 import { PageTitle, Card, Button, Spinner } from '../components/ui'
 import toast from 'react-hot-toast'
+import { parseApiError } from '../utils/formatters'
 
 export default function JobEditPage() {
   const { id }   = useParams()
@@ -26,7 +27,7 @@ export default function JobEditPage() {
       toast.success('Cập nhật thành công!')
       navigate(`/admin/jobs/${id}`)
     } catch (err) {
-      toast.error(err?.response?.data?.message || err?.message || 'Cập nhật thất bại')
+      toast.error(parseApiError(err, 'Cập nhật thất bại'), { style: { whiteSpace: 'pre-line' } })
     } finally { setSaving(false) }
   }
 
@@ -42,7 +43,7 @@ export default function JobEditPage() {
       benefits:        job.benefits        || '',
       location:        job.location        || '',
       experienceLevel: job.experienceLevel || '',
-      incomeLevel:     job.incomeLevel     || '',   // ← THÊM DÒNG NÀY
+      incomeLevel:     job.incomeLevel     || '',
       status:          job.status          || '',
       expiresAt:       job.expiresAt       || '',
       imageUrl:        job.imageUrl        || '',
@@ -72,4 +73,4 @@ export default function JobEditPage() {
       </Card>
     </div>
   )
-}
+} 

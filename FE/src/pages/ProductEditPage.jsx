@@ -4,6 +4,7 @@ import { productService } from '../services/productService'
 import ProductForm from '../components/product/ProductForm'
 import { PageTitle, Card, Button, Spinner } from '../components/ui'
 import toast from 'react-hot-toast'
+import { parseApiError } from '../utils/formatters'
 
 export default function ProductEditPage() {
   const { id }   = useParams()
@@ -26,7 +27,7 @@ export default function ProductEditPage() {
       toast.success('Cập nhật sản phẩm thành công!')
       navigate(`/admin/products/${id}`)
     } catch (err) {
-      toast.error(err?.response?.data?.message || err?.message || 'Cập nhật thất bại')
+      toast.error(parseApiError(err, 'Cập nhật thất bại'), { style: { whiteSpace: 'pre-line' } })
     } finally {
       setSaving(false)
     }
