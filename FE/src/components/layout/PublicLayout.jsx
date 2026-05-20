@@ -111,7 +111,7 @@ export default function PublicLayout() {
       </main>
 
       {/* FOOTER (giữ nguyên của bạn) */}
-      <footer style={{ background: "#111827", color: "#9ca3af", marginTop: 80, padding: "36px 24px" }}>
+      {/* <footer style={{ background: "#111827", color: "#9ca3af", marginTop: 80, padding: "36px 24px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 24 }}>
 
           <div>
@@ -138,7 +138,130 @@ export default function PublicLayout() {
         <div style={{ maxWidth: 1200, margin: "20px auto 0", paddingTop: 20, borderTop: "1px solid #374151", fontSize: 12, textAlign: "center" }}>
           © 2025 CKM. All rights reserved.
         </div>
-      </footer>
+      </footer> */}
+      <footer style={{ background: "#111827", color: "#9ca3af", marginTop: 80, padding: "36px 24px" }}>
+
+  {/* Lightbox state — dùng vanilla JS để tránh thêm state vào PublicLayout */}
+  <style>{`
+    .footer-license-img {
+      height: 90px;
+      width: auto;
+      object-fit: contain;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      cursor: zoom-in;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .footer-license-img:hover {
+      transform: scale(1.05);
+      border-color: #6b7280;
+    }
+    #footer-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.88);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+    #footer-lightbox.open {
+      display: flex;
+    }
+    #footer-lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 10px;
+      display: block;
+    }
+    #footer-lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+  `}</style>
+
+  <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 32 }}>
+
+    {/* Cột 1: Thông tin công ty */}
+    <div style={{ minWidth: 200 }}>
+      <span style={{ color: "#fff", fontWeight: 700, fontSize: 16, display: "block", marginBottom: 10 }}>
+        Công ty cổ phần dược phẩm CKM
+      </span>
+      <address style={{ fontSize: 13, lineHeight: 1.8, fontStyle: 'normal' }}>
+        Công ty Cổ phần Dược phẩm CKM<br />
+        66A Đ.21 KDC Bình Hưng, xã Bình Hưng, TP.HCM.
+      </address>
+    </div>
+
+    {/* Cột 2: Liên hệ */}
+    <div style={{ minWidth: 180 }}>
+      <div style={{ color: "#fff", fontWeight: 600, marginBottom: 10, fontSize: 14 }}>Liên hệ</div>
+      <p style={{ fontSize: 13, lineHeight: 1.8 }}>
+        Zalo &amp; Điện thoại: <a href="tel:0934006920" style={{ color: '#9ca3af', textDecoration: 'none' }}>0934 006 920</a><br />
+        WhatsApp: <a href="https://wa.me/84976017489" style={{ color: '#9ca3af', textDecoration: 'none' }}>0976 017 489</a>
+      </p>
+    </div>
+
+    {/* Cột 3: Giấy phép */}
+    <div style={{ minWidth: 200 }}>
+      <div style={{ color: "#fff", fontWeight: 600, marginBottom: 10, fontSize: 14 }}>
+        Giấy phép &amp; Chứng nhận
+      </div>
+      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <figure style={{ margin: 0 }}>
+          <img
+            src="/DPKD.jpg"
+            alt="Giấy phép đăng ký kinh doanh Công ty Cổ phần Dược phẩm CKM"
+            className="footer-license-img"
+            onClick={() => {
+              const lb = document.getElementById('footer-lightbox')
+              const img = document.getElementById('footer-lightbox-img')
+              if (lb && img) { img.src = '/DPKD.jpg'; img.alt = 'Giấy phép đăng ký kinh doanh CKM'; lb.classList.add('open') }
+            }}
+          />
+          <figcaption style={{ fontSize: 10, color: '#6b7280', marginTop: 4, textAlign: 'center' }}>DPKD</figcaption>
+        </figure>
+      </div>
+    </div>
+
+  </div>
+
+  <div style={{ maxWidth: 1200, margin: "20px auto 0", paddingTop: 20, borderTop: "1px solid #374151", fontSize: 12, textAlign: "center" }}>
+    © 2025 CKM. All rights reserved.
+  </div>
+
+  {/* Lightbox */}
+  <div
+    id="footer-lightbox"
+    onClick={() => document.getElementById('footer-lightbox')?.classList.remove('open')}
+  >
+    <button
+      id="footer-lightbox-close"
+      onClick={(e) => { e.stopPropagation(); document.getElementById('footer-lightbox')?.classList.remove('open') }}
+    >
+      ✕
+    </button>
+    <img id="footer-lightbox-img" src="" alt="" onClick={(e) => e.stopPropagation()} />
+  </div>
+
+</footer>
     </div>
   );
 }
